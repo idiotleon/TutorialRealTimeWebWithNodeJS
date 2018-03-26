@@ -1,5 +1,5 @@
-function say(filename) {
-    return fs.readFileSync(filename);
+function say(filename, cb) {
+    return fs.readFile(filename, cb);
 }
 
 var fs = require("fs");

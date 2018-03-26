@@ -5,7 +5,7 @@ function printHelp() {
     console.log("");
     console.log("usage:");
     console.log("--help                 print this help");
-    console.log("--file={NAME}                  read the file of {NAME} and output");
+    console.log("--file={NAME}    read the file of {NAME} and output");
     console.log("");
 }
 
@@ -18,6 +18,10 @@ if (args.help || !args.file) {
 
 var hello = require('./helloworld.js');
 
-var contents = hello.say(args.file);
-
-console.log(contents.toString());
+hello.say(args.file, function (err, contents) {
+    if (err) {
+        console.error("Error: " + err);
+    } else {
+        console.log(contents.toString());
+    }
+});
