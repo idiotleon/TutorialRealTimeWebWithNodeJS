@@ -9,6 +9,8 @@
   "author": "Leon",
   "license": "ISC",
   "dependencies": {
+    "asynquence": "^0.10.2",
+    "asynquence-contrib": "^0.28.2",
     "minimist": "^1.2.0"
   }
 }
