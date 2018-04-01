@@ -21,7 +21,7 @@ function handleIO(socket) {
         console.log("client disconnected");
     }
 
-    console.log("client connect");
+    console.log("client connected");
     socket.on("disconnect", disconnect);
 }
 
