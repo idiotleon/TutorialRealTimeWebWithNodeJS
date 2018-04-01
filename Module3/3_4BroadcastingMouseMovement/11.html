@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Broadcasting Mouse Movement
+    </title>
+    <style>
+        #spy_marker {
+            position: absolute;
+            background-color: blue;
+            width: 4px;
+            height: 4px;
+            left: 0px;
+            top: 0px;
+            display: none;
+        }
+    </style>
+</head>
+
+<h1>Broadcasting Mouse Movement</h1>
+<p id="hello"></p>
+<p>
+    <input id="msgtobroadcast" />
+    <input type="button" id="dobroadcast" value="Send" />
+</p>
+<p id="broadcast"></p>
+<div id="spy_marker" />
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script>
+    function hello(message) {
+        document.getElementById("hello").innerHTML = message;
+    }
+
+    function broadcast(message) {
+        document.getElementById("broadcast").innerHTML =
+            document.getElementById("broadcast").innerHTML + message + "<br/>"
+    }
+
+    var socket = io.connect("/", {
+        "connect.timeout": 3000,
+        "reconnect": false
+    });
+
+    var $spy_marker = $("#spy_marker");
+
+    socket.on("hello", hello);
+    socket.on("broadcast", broadcast);
+    socket.on("spy", spy);
+
+    $(document).bind("mousemove", function (event) {
+        socket.emit("spy", event.pageX, event.pageY);
+    });
+
+    document.getElementById("dobroadcast").addEventListener(
+        "click",
+        function () {
+            console.log("Button clicked");
+            var inp = document.getElementById("msgtobroadcast");
+            socket.emit("message", inp.value);
+            inp.value = "";
+        }, false
+    );
+
+    function spy(move) {
+        $spy_marker.show().css({
+            left: (move.x - 2) + "px",
+            top: (move.y - 2) + "px"
+        });
+    }
+</script>
+
+</body>
+
+</html>
